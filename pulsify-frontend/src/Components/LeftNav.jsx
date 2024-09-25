@@ -87,13 +87,13 @@ const LeftNav = () => {
 
   return (
     <div className="scrollable-container w-16 sm:w-0 md:w-[76px] lg:w-64 bg-opacity-20 bg-gray-100 text-black h-screen flex-col md:flex navbar">
-      <div className="flex items-center p-4">
-        <img src="/pulsify.svg" alt="App Logo" className="w-8 h-8 lg:w-12 lg:h-12" />
+      <div className="flex items-center p-4 ">
+        <img src="/pulsify.svg" alt="App Logo" className="w-9 h-9 lg:w-12 lg:h-12" />
         <h5 className="ml-2 text-lg font-bold hidden lg:text-3xl lg:inline">Pulsify</h5>
       </div>
 
       <div className="flex flex-col flex-1 mt-4">
-        <div className="flex flex-col space-y-2 px-4">
+        <div className="flex flex-col space-y-2 px-4 md:px-2">
           <div className="relative">
             <input
               type="text"
@@ -101,8 +101,10 @@ const LeftNav = () => {
               onChange={handleSearchChange}
               className="hidden lg:block px-2 py-1 bg-gray-700 border border-gray-600 rounded w-full focus:bg-white"
             />
-            <div className="sm:hidden md:block lg:hidden">
-              <BiSearchAlt className="text-2xl" />
+            <div className="hidden md:block">
+              <center>
+                <BiSearchAlt className="text-2xl hover:text-orange-300 " />
+              </center>
             </div>
           </div>
 
@@ -160,7 +162,7 @@ const LeftNav = () => {
             className="flex items-center justify-between py-2 hover:bg-gray-700 cursor-pointer"
             onClick={handleAddToLibrary}
           >
-            <span className="text-gray-100 font-bold flex-1 text-right">Your Library</span>
+            <span className="text-gray-100 font-bold flex-1 text-right sm:text-sm">Your Library</span>
           </div>
           <div className="flex flex-col mt-2">
             {filteredPlaylists.map(playlist => (

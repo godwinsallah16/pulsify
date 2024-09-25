@@ -1,6 +1,7 @@
 import './App.css'
 import { BrowserRouter as Router } from 'react-router-dom'
 import LeftNav from './Components/LeftNav'
+import MusicPlayer from './Components/MusicPlayer'
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <div className='background'></div>
       <Router>
         <LeftNav />
+        <MusicPlayer />
       </Router>
     </div>
   )
