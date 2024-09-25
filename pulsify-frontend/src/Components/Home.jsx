@@ -10,63 +10,44 @@ const Home = () => {
   const [trendingSongs, setTrendingSongs] = useState([]); // Added state for trending songs
   const [loading, setLoading] = useState(true);
 
- useEffect(() => {
-  const cachedArtists = sessionStorage.getItem('artists');
-  const cachedRecommendedAlbums = sessionStorage.getItem('recommendedAlbums');
-  const cachedTrendingSongs = sessionStorage.getItem('trendingSongs');
-
-  if (cachedArtists) {
-    setArtists(JSON.parse(cachedArtists));
-  } else {
+  useEffect(() => {
     const fetchArtists = async () => {
       try {
         const response = await axios.get("https://pulsify.onrender.com/api/trending-artists");
         setArtists(response.data.global || []);
-        sessionStorage.setItem('artists', JSON.stringify(response.data.global || []));
       } catch (error) {
         console.error("Error fetching artists: ", error);
         setArtists([]);
       }
     };
-    fetchArtists();
-  }
 
-  if (cachedRecommendedAlbums) {
-    setRecommendedAlbums(JSON.parse(cachedRecommendedAlbums));
-  } else {
     const fetchRecommendedAlbums = async () => {
       try {
         const response = await axios.get("https://pulsify.onrender.com/api/album");
         setRecommendedAlbums(response.data || []);
-        sessionStorage.setItem('recommendedAlbums', JSON.stringify(response.data || []));
       } catch (error) {
         console.error("Error fetching recommended albums: ", error);
         setRecommendedAlbums([]);
       }
     };
-    fetchRecommendedAlbums();
-  }
 
-  if (cachedTrendingSongs) {
-    setTrendingSongs(JSON.parse(cachedTrendingSongs));
-  } else {
+    // Fetch trending songs from the new API
     const fetchTrendingSongs = async () => {
-      setLoading(true);
+      setLoading(true); // Set loading to true at the start of the fetch
       try {
         const response = await axios.get("http://localhost:5000/api/trending-songs");
         setTrendingSongs(response.data || []);
-        sessionStorage.setItem('trendingSongs', JSON.stringify(response.data || []));
       } catch (error) {
         console.error("Error fetching trending songs: ", error);
         setTrendingSongs([]);
       } finally {
-        setLoading(false);
+        setLoading(false); // Set loading to false after fetch attempts
       }
     };
-    fetchTrendingSongs();
-  }
-}, []);
-
+    fetchArtists();
+    fetchRecommendedAlbums();
+    fetchTrendingSongs(); // Call the new fetch function
+  }, []);
 
   const Aimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8nnTYwTslXh4tT-yFINoz8HF7fhs7D7X7dA&s";
   
