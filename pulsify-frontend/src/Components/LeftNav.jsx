@@ -45,7 +45,13 @@ const LeftNav = () => {
 
   const handleItemClick = (itemName) => {
     setActiveItem(itemName);
-    navigate(`/${itemName}`);
+    if (itemName === 'home'){
+       navigate(`/`);
+    }
+    else{
+      navigate(`/${itemName}`);
+    }
+    
   };
 
   const handleSearchChange = async (e) => {
@@ -86,8 +92,8 @@ const LeftNav = () => {
     : sortedPlaylists;
 
   return (
-    <div className="scrollable-container w-16 sm:w-0 md:w-[76px] lg:w-64 bg-opacity-20 bg-gray-100 text-black h-screen flex-col md:flex navbar">
-      <div className="flex items-center p-4 ">
+    <div className="scrollable-container sm:hidden md:w-[76px] lg:w-60 bg-opacity-20 bg-gray-100 text-black h-screen flex-col md:flex navbar">
+      <div className="flex items-center p-4 w-full">
         <img src="/pulsify.svg" alt="App Logo" className="w-9 h-9 lg:w-12 lg:h-12" />
         <h5 className="ml-2 text-lg font-bold hidden lg:text-3xl lg:inline">Pulsify</h5>
       </div>
@@ -162,7 +168,7 @@ const LeftNav = () => {
             className="flex items-center justify-between py-2 hover:bg-gray-700 cursor-pointer"
             onClick={handleAddToLibrary}
           >
-            <span className="text-gray-100 font-bold flex-1 text-right sm:text-sm">Your Library</span>
+            <span className="text-gray-100 font-bold flex-1 text-right sm:text-sm"><span className='hidden lg:inline'>Your</span> Library</span>
           </div>
           <div className="flex flex-col mt-2">
             {filteredPlaylists.map(playlist => (
@@ -179,7 +185,7 @@ const LeftNav = () => {
                       <span className="text-white">▶</span>
                     </button>
                   </div>
-                  <span className="ml-2">{playlist.name}</span>
+                  <span className="ml-2 hidden lg:inline">{playlist.name}</span>
                 </div>
               )
             ))}
@@ -192,10 +198,10 @@ const LeftNav = () => {
                 <div className="relative group">
                   <img src="/path-to-liked-songs-image.png" alt="Liked Songs" className="w-10 h-10 rounded transition-all duration-300" />
                   <button className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span className="text-white">▶</span>
+                    <span className="text-white ">▶</span>
                   </button>
                 </div>
-                <span className="ml-2">Liked Songs</span>
+                <span className="ml-2 hidden lg:inline">Liked Songs</span>
               </div>
             )}
           </div>

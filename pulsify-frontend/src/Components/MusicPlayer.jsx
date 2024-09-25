@@ -172,7 +172,7 @@ const formatTime = useCallback((time) => {
   }, []);
 
   return (
-    <div className="fixed bottom-0 md:left-[78px] lg:left-64 w-[calc(100%-78px)] lg:w-[calc(100%-16rem)] h-[50px] bg-gray-800 border-solid text-white flex justify-between items-center sm:hidden md:flex">
+    <div className="fixed m-0 p-0 bottom-0 md:left-[76px] lg:left-60 w-[calc(100%-76px)] lg:w-[calc(100%-15rem)] h-[50px] bg-gray-800 border-solid text-white flex justify-between items-center sm:hidden">
       <audio ref={audioRef} onTimeUpdate={handleTimeUpdate} />
 
       {/* Album Art and Song Details */}
@@ -247,7 +247,7 @@ const formatTime = useCallback((time) => {
           step={0.01}
           value={volume}
           onChange={(e) => setVolume(Number(e.target.value))}
-          className="w-24 h-1 bg-gray-700 ml-2 cursor-pointer"
+          className="w-24 md:w-12 h-1 bg-gray-700 ml-2 cursor-pointer"
         />
         {/* Queue & Lyrics */}
         <MdOutlineQueueMusic className="text-lg md:text-base cursor-pointer ml-2" title="Queue" />
