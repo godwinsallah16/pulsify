@@ -3,51 +3,11 @@ import { FaPlayCircle } from 'react-icons/fa';
 import Card from "./Card"; // Adjust the import path as needed
 import { Link } from "react-router-dom";
 import axios from "axios"; // Axios for making API requests
+import fetchHomeData from "../hooks/fetchHomeData";
+
 
 const Home = () => {
-  const [artists, setArtists] = useState([]);
-  const [recommendedAlbums, setRecommendedAlbums] = useState([]);
-  const [trendingSongs, setTrendingSongs] = useState([]); // Added state for trending songs
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchArtists = async () => {
-      try {
-        const response = await axios.get("https://pulsify.onrender.com/api/trending-artists");
-        setArtists(response.data.global || []);
-      } catch (error) {
-        console.error("Error fetching artists: ", error);
-        setArtists([]);
-      }
-    };
-
-    const fetchRecommendedAlbums = async () => {
-      try {
-        const response = await axios.get("https://pulsify.onrender.com/api/album");
-        setRecommendedAlbums(response.data || []);
-      } catch (error) {
-        console.error("Error fetching recommended albums: ", error);
-        setRecommendedAlbums([]);
-      }
-    };
-
-    // Fetch trending songs from the new API
-    const fetchTrendingSongs = async () => {
-      setLoading(true); // Set loading to true at the start of the fetch
-      try {
-        const response = await axios.get("http://localhost:5000/api/trending-songs");
-        setTrendingSongs(response.data || []);
-      } catch (error) {
-        console.error("Error fetching trending songs: ", error);
-        setTrendingSongs([]);
-      } finally {
-        setLoading(false); // Set loading to false after fetch attempts
-      }
-    };
-    fetchArtists();
-    fetchRecommendedAlbums();
-    fetchTrendingSongs(); // Call the new fetch function
-  }, []);
+  const { artists, recommendedAlbums, trendingSongs, loading } = fetchHomeData();
 
   const Aimage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8nnTYwTslXh4tT-yFINoz8HF7fhs7D7X7dA&s";
   
@@ -65,8 +25,8 @@ const Home = () => {
   const recentlyPlayed = [
     { id: 1, title: "Chill Vibes", image: Aimage, songUrl: "http://sdkjhgdssdgds" },
     { id: 2, title: "Workout Mix", image: Aimage, songUrl: "http://sdkjhgdssdgds" },
-    { id: 1, title: "Chill Vibes", image: Aimage, songUrl: "http://sdkjhgdssdgds" },
-    { id: 2, title: "Workout Mix", image: Aimage, songUrl: "http://sdkjhgdssdgds" },
+    { id: 3, title: "Chill Vibes", image: Aimage, songUrl: "http://sdkjhgdssdgds" },
+    { id: 4, title: "Workout Mix", image: Aimage, songUrl: "http://sdkjhgdssdgds" },
     // More items...
   ];
 

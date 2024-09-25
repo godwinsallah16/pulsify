@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const playbackSlice = createSlice({
   name: "playback",
   initialState: {
-    currentPlayUrl: "",
+    currentPlayUrl: "dfhgdh",
     currentTitle: "",
     currentArtist: "",
     currentImage: "",
