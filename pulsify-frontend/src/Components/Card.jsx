@@ -1,19 +1,34 @@
 // src/components/Card.js
 import { FaPlayCircle } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
-import { setPlayUrl } from '../redux/playbackSlice'; // Adjust the path if needed
+import { setPlayUrl, setRelatedSongs } from '../redux/playbackSlice'; // Adjust the path if needed
+import axios from 'axios'; // For fetching related songs (you can use fetch too)
 
 const Card = ({ item }) => {
   const dispatch = useDispatch();
 
+  const fetchRelatedSongs = async (songId) => {
+    try {
+      const response = await axios.get(`/api/related-songs/${songId}`); // Example API call to fetch related songs
+      const relatedSongs = response.data; // Assuming data comes as an array of related songs
+      dispatch(setRelatedSongs(relatedSongs));
+    } catch (error) {
+      console.error("Error fetching related songs:", error);
+    }
+  };
+
   const handlePlayClick = () => {
     if (item.url) {
+      // Dispatch the first song to Redux
       dispatch(setPlayUrl({ 
         url: item.url, 
         title: item.title, 
         artist: item.artist, 
         image: item.image 
-      })); // Dispatching all relevant data
+      }));
+
+      // Fetch related songs and dispatch them to Redux
+      fetchRelatedSongs(item.id); // Assuming each song has a unique ID
     } else {
       console.warn("No URL provided for this item");
     }

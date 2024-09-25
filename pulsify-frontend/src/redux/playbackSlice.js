@@ -1,22 +1,24 @@
+// redux/playbackSlice.js
 import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  currentSong: null,
+  relatedSongs: [], // To store related songs
+};
 
 const playbackSlice = createSlice({
   name: "playback",
-  initialState: {
-    currentPlayUrl: "dfhgdh",
-    currentTitle: "",
-    currentArtist: "",
-    currentImage: "",
-  },
+  initialState,
   reducers: {
     setPlayUrl: (state, action) => {
-      state.currentPlayUrl = action.payload.url; // Set the play URL
-      state.currentTitle = action.payload.title; // Set the song title
-      state.currentArtist = action.payload.artist; // Set the artist name
-      state.currentImage = action.payload.image; // Set the image URL
+      state.currentSong = action.payload;
+      state.relatedSongs = []; // Clear related songs when a new song is played
+    },
+    setRelatedSongs: (state, action) => {
+      state.relatedSongs = action.payload; // Update related songs when they are fetched
     },
   },
 });
 
-export const { setPlayUrl } = playbackSlice.actions;
+export const { setPlayUrl, setRelatedSongs } = playbackSlice.actions;
 export default playbackSlice.reducer;

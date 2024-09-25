@@ -1,5 +1,3 @@
-// useMusicPlayer.js
-
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 
@@ -12,23 +10,22 @@ const useMusicPlayer = () => {
   const [isShuffling, setIsShuffling] = useState(false);
   const [repeatMode, setRepeatMode] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
-  const [queue, setQueue] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const audioRef = useRef(null);
 
-  const currentPlayUrl = useSelector((state) => state.playback.currentPlayUrl);
-  const currentTitle = useSelector((state) => state.playback.currentTitle);
-  const currentArtist = useSelector((state) => state.playback.currentArtist);
-  const currentImage = useSelector((state) => state.playback.currentImage);
+  const currentSong = useSelector((state) => state.playback.currentSong); // Contains URL, title, artist, image
+  const relatedSongs = useSelector((state) => state.playback.relatedSongs); // Array of related songs from Redux
+
+  const [queue, setQueue] = useState([]);
 
   // Effect to handle autoplay when the song URL changes and reset the queue
   useEffect(() => {
-    if (currentPlayUrl) {
+    if (currentSong && currentSong.url) {
       audioRef.current
         .play()
         .then(() => {
           setIsPlaying(true);
-          resetQueueWithNewSong(); // Reset the queue with new song recommendations
+          resetQueueWithNewSong(); // Reset the queue with new song and related songs
         })
         .catch((error) => {
           console.error("Error playing audio:", error);
@@ -37,18 +34,20 @@ const useMusicPlayer = () => {
       setIsPlaying(false);
       audioRef.current.pause();
     }
-  }, [currentPlayUrl]);
+  }, [currentSong]);
 
   const resetQueueWithNewSong = () => {
+    // Set the queue to the current song + related songs from Redux
     setQueue([
       {
-        url: currentPlayUrl,
-        title: currentTitle,
-        artist: currentArtist,
-        image: currentImage,
+        url: currentSong.url,
+        title: currentSong.title,
+        artist: currentSong.artist,
+        image: currentSong.image,
       },
+      ...relatedSongs, // Add related songs to the queue
     ]);
-    setCurrentIndex(0);
+    setCurrentIndex(0); // Start the queue from the first song
   };
 
   // Set volume on the audio element when volume changes
@@ -60,7 +59,7 @@ const useMusicPlayer = () => {
 
   // Toggle play/pause and manage state
   const togglePlayPause = useCallback(() => {
-    if (!currentPlayUrl) return; // Prevent toggling if no song URL
+    if (!currentSong || !currentSong.url) return; // Prevent toggling if no song URL
 
     setIsPlaying((prevState) => {
       if (prevState) {
@@ -70,7 +69,7 @@ const useMusicPlayer = () => {
       }
       return !prevState;
     });
-  }, [currentPlayUrl]);
+  }, [currentSong]);
 
   // Format time in mm:ss format
   const formatTime = useCallback((time) => {
@@ -95,7 +94,7 @@ const useMusicPlayer = () => {
   // Update time when slider is changed
   const handleSliderChange = useCallback(
     (e) => {
-      if (!currentPlayUrl) return; // Prevent changing time if no song URL
+      if (!currentSong || !currentSong.url) return; // Prevent changing time if no song URL
 
       const newTime = e.target.value;
       setCurrentTime(newTime);
@@ -105,7 +104,7 @@ const useMusicPlayer = () => {
         audioRef.current.play();
       }
     },
-    [isPlaying, currentPlayUrl]
+    [isPlaying, currentSong]
   );
 
   // Toggle mute state
