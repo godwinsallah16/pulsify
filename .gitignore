@@ -7,21 +7,37 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-*/node_modules
-dist
-dist-ssr
-*.local
-*.env
+# Node modules for both frontend and backend
+node_modules/
+pulsify-frontend/node_modules/
+pulsify-backend/node_modules/
 
-build
+# Build output directories for both frontend and backend
+dist/
+dist-ssr/
+pulsify-frontend/dist/
+pulsify-backend/dist/
+
+# Environment variables
+.env
+pulsify-frontend/.env
+pulsify-backend/.env
+
+# Local environment settings
+*.local
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Ignore lockfiles if needed
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
