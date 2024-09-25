@@ -2,7 +2,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  currentSong: null,
+  currentSong: {
+    url: null,
+    title: null,
+    artist: null,
+    image: null,
+  },
   relatedSongs: [], // To store related songs
 };
 
