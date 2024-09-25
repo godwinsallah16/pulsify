@@ -190,6 +190,10 @@ const useMusicPlayer = () => {
     setIsLiked((prevState) => !prevState);
   }, []);
 
+  const isShuffled = useCallback(() => {
+    setIsShuffling((prevShuffling) => !prevShuffling);
+  }, []);
+
   return {
     audioRef,
     isPlaying,
@@ -212,6 +216,7 @@ const useMusicPlayer = () => {
     getRepeatIcon,
     toggleLike,
     handleTimeUpdate,
+    isShuffled,
   };
 };
 

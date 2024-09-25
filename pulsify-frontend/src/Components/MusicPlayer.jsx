@@ -2,10 +2,11 @@
 
 import React from 'react';
 import { FaPlay, FaPause, FaVolumeUp, FaVolumeMute, FaRandom, FaStepForward, FaStepBackward, FaRedo, FaHeart } from 'react-icons/fa';
-import { LuRepeat1 } from 'react-icons/lu'; 
+import { RiRepeatOneFill } from "react-icons/ri";
 import { MdOutlineQueueMusic } from 'react-icons/md'; 
 import { PiMicrophoneStageBold } from "react-icons/pi";
 import useMusicPlayer from '../hooks/useMusicPlayer'; // Import the custom hook
+
 
 const MusicPlayer = () => {
   const {
@@ -16,7 +17,6 @@ const MusicPlayer = () => {
     volume,
     isMuted,
     isShuffling,
-    repeatMode,
     isLiked,
     queue,
     currentIndex,
@@ -30,6 +30,7 @@ const MusicPlayer = () => {
     getRepeatIcon,
     toggleLike,
     handleTimeUpdate,
+    isShuffled,
   } = useMusicPlayer(); // Destructure the hook's return values
 
    
@@ -66,7 +67,7 @@ const MusicPlayer = () => {
           <FaRandom
             className={`text-sm md:text-xs cursor-pointer ${isShuffling ? 'text-green-500' : 'text-white'}`}
             title="Shuffle"
-            onClick={() => setIsShuffling((prevState) => !prevState)}
+            onClick={isShuffled}
           />
           <FaStepBackward
             className="text-lg md:text-base cursor-pointer"
@@ -90,7 +91,7 @@ const MusicPlayer = () => {
                     case 1:
                         return <FaRedo className="text-green-500" title="Repeat All" />;
                     default:
-                        return <LuRepeat1 className="text-green-500 font-bold" title="Repeat One" />;
+                        return <RiRepeatOneFill className="text-green-500 font-bold" title="Repeat One" />;
                 }})()}
             </div>  
         </div>
