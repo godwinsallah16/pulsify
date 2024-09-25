@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './components/Home';
 import LeftNav from './components/LeftNav';
-import MusicPlayer from './Components/MusicPlayer';
-import Home from './Components/Home';
+import MusicPlayer from './components/MusicPlayer';
 
 function App() {
   const [currentSongUrl, setCurrentSongUrl] = useState("");
