@@ -1,36 +1,45 @@
-// src/components/Card.js
 import { FaPlayCircle } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { setPlayUrl, setRelatedSongs } from '../redux/playbackSlice'; // Adjust the path if needed
-import axios from 'axios'; // For fetching related songs (you can use fetch too)
+import axios from 'axios'; // For making the API call for album songs
 
-const Card = ({ item }) => {
+const Card = ({ item, type }) => {
   const dispatch = useDispatch();
 
-  const fetchRelatedSongs = async (songId) => {
+  // Function to handle play click based on the type of item
+  const handlePlayClick = async () => {
     try {
-      const response = await axios.get(`/api/related-songs/${songId}`); // Example API call to fetch related songs
-      const relatedSongs = response.data; // Assuming data comes as an array of related songs
-      dispatch(setRelatedSongs(relatedSongs));
+      if (type === 'album') {
+        // Make a request to fetch the album songs
+        const response = await axios.get(`http://localhost:5000/api/album/${item.id}/songs`);
+        
+        const { firstSong, relatedSongs } = response.data; // Assuming response contains firstSong and relatedSongs
+
+        // Dispatch the first song details to Redux as the currently playing song
+        dispatch(setPlayUrl({ 
+          url: firstSong.songUrl, 
+          title: firstSong.title, 
+          artist: firstSong.artist, 
+          image: firstSong.imageUrl // Use the album image for now
+        }));
+
+        // Dispatch related songs to Redux
+        dispatch(setRelatedSongs(relatedSongs));
+      } 
+      // Additional type checks can be added here for 'single', 'playlist', etc.
+      else if (type === 'single') {
+        // Implement single song logic
+        console.log("Handle single song play logic here");
+      } 
+      else if (type === 'playlist') {
+        // Implement playlist logic
+        console.log("Handle playlist play logic here");
+      } 
+      else {
+        console.warn("Unknown type provided:", type);
+      }
     } catch (error) {
-      console.error("Error fetching related songs:", error);
-    }
-  };
-
-  const handlePlayClick = () => {
-    if (item.url) {
-      // Dispatch the first song to Redux
-      dispatch(setPlayUrl({ 
-        url: item.url, 
-        title: item.title, 
-        artist: item.artist, 
-        image: item.image 
-      }));
-
-      // Fetch related songs and dispatch them to Redux
-      fetchRelatedSongs(item.id); // Assuming each song has a unique ID
-    } else {
-      console.warn("No URL provided for this item");
+      console.error("Error fetching item songs:", error);
     }
   };
 

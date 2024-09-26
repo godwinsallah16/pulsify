@@ -7,7 +7,6 @@ import { MdOutlineQueueMusic } from 'react-icons/md';
 import { PiMicrophoneStageBold } from "react-icons/pi";
 import useMusicPlayer from '../hooks/useMusicPlayer'; // Import the custom hook
 
-
 const MusicPlayer = () => {
   const {
     audioRef,
@@ -30,10 +29,19 @@ const MusicPlayer = () => {
     getRepeatIcon,
     toggleLike,
     handleTimeUpdate,
-    isShuffled,
+    setVolume,
   } = useMusicPlayer(); // Destructure the hook's return values
 
-   
+  // Set the audio source whenever currentIndex changes
+  React.useEffect(() => {
+    if (queue[currentIndex]) {
+      audioRef.current.src = queue[currentIndex].url; // Assuming each song object has a 'url' property
+      if (isPlaying) {
+        audioRef.current.play();
+      }
+    }
+  }, [currentIndex, isPlaying, audioRef, queue]);
+
   return (
     <div className="fixed m-0 p-0 bottom-0 md:left-[76px] lg:left-60 w-[calc(100%-76px)] lg:w-[calc(100%-15rem)] h-[50px] bg-gray-800 border-solid text-white flex justify-between items-center sm:hidden">
       <audio ref={audioRef} onTimeUpdate={handleTimeUpdate} />
@@ -67,7 +75,7 @@ const MusicPlayer = () => {
           <FaRandom
             className={`text-sm md:text-xs cursor-pointer ${isShuffling ? 'text-green-500' : 'text-white'}`}
             title="Shuffle"
-            onClick={isShuffled}
+            onClick={togglePlayPause} // Toggle shuffle state
           />
           <FaStepBackward
             className="text-lg md:text-base cursor-pointer"

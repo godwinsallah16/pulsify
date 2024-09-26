@@ -13,19 +13,24 @@ const useMusicPlayer = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const audioRef = useRef(null);
 
-  const currentSong = useSelector((state) => state.playback.currentSong); // Contains URL, title, artist, image
-  const relatedSongs = useSelector((state) => state.playback.relatedSongs); // Array of related songs from Redux
+  // Get current song and related songs from Redux
+  const currentSong = useSelector((state) => state.playback.currentSong);
+  const relatedSongs = useSelector((state) => state.playback.relatedSongs);
 
   const [queue, setQueue] = useState([]);
 
   // Effect to handle autoplay when the song URL changes and reset the queue
   useEffect(() => {
     if (currentSong && currentSong.url) {
+      if (audioRef.current) {
+        audioRef.current.pause(); // Pause the currently playing track
+      }
+      resetQueueWithNewSong(); // Reset the queue with the current song and related songs
+      audioRef.current.src = currentSong.url; // Set the audio source to the current song's URL
       audioRef.current
         .play()
         .then(() => {
           setIsPlaying(true);
-          resetQueueWithNewSong(); // Reset the queue with new song and related songs
         })
         .catch((error) => {
           console.error("Error playing audio:", error);
@@ -45,9 +50,15 @@ const useMusicPlayer = () => {
         artist: currentSong.artist,
         image: currentSong.image,
       },
-      ...relatedSongs, // Add related songs to the queue
+      ...relatedSongs.map((song) => ({
+        url: song.songUrl,
+        title: song.title,
+        artist: song.artist,
+        image: song.imageUrl,
+      })), // Map related songs to include their details
     ]);
     setCurrentIndex(0); // Start the queue from the first song
+    setCurrentTime(0); // Reset current time
   };
 
   // Set volume on the audio element when volume changes
@@ -118,13 +129,11 @@ const useMusicPlayer = () => {
   // Handle song end based on repeat mode
   const handleSongEnd = useCallback(() => {
     if (repeatMode === 2) {
+      // Repeat single song
       audioRef.current.currentTime = 0;
       audioRef.current.play();
-    } else if (repeatMode === 1) {
-      setCurrentTime(0);
-      audioRef.current.play();
     } else {
-      handleNextSong();
+      handleNextSong(); // Move to next song
     }
   }, [repeatMode]);
 

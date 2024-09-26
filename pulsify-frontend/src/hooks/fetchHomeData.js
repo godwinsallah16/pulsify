@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { hostUrl } from "../utils/constants";
 
 const fetchHomeData = () => {
   const [artists, setArtists] = useState([]);
@@ -11,7 +12,7 @@ const fetchHomeData = () => {
     const fetchArtists = async () => {
       try {
         const response = await axios.get(
-          "https://pulsify.onrender.com/api/trending-artists"
+          `${hostUrl}/api/artists/trending-artists`
         );
         setArtists(response.data.global || []);
       } catch (error) {
@@ -22,9 +23,7 @@ const fetchHomeData = () => {
 
     const fetchRecommendedAlbums = async () => {
       try {
-        const response = await axios.get(
-          "https://pulsify.onrender.com/api/album"
-        );
+        const response = await axios.get(`${hostUrl}/api/albums`);
         setRecommendedAlbums(response.data || []);
       } catch (error) {
         console.error("Error fetching recommended albums: ", error);
@@ -35,9 +34,7 @@ const fetchHomeData = () => {
     const fetchTrendingSongs = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/trending-songs"
-        );
+        const response = await axios.get(`${hostUrl}/api/trending-songs`);
         setTrendingSongs(response.data || []);
       } catch (error) {
         console.error("Error fetching trending songs: ", error);

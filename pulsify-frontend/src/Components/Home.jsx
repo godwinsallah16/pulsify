@@ -126,6 +126,7 @@ const Home = () => {
                   artist: song.artist, 
                 }}
                 onPlay={handlePlay}
+                type='single'
               />
             ))
           ) : (
@@ -152,6 +153,7 @@ const Home = () => {
                 url: playlist.playlistUrl,
               }}
               onPlay={handlePlay}
+              type='playlist'
             />
           ))}
         </div>
@@ -171,13 +173,15 @@ const Home = () => {
           ) : recommendedAlbums.length > 0 ? (
             recommendedAlbums.map((album) => (
               <Card
-                key={album.albumUrl}
+                key={album.id}
                 item={{
                   title: album.name,
                   image: album.imageUrl,
                   url: album.albumUrl,
+                  ...album,
                 }}
                 onPlay={handlePlay}
+                type='album'
               />
             ))
           ) : (
@@ -204,6 +208,7 @@ const Home = () => {
                 url: station.stationUrl,
               }}
               onPlay={handlePlay}
+              type={'radio'}
             />
           ))}
         </div>
