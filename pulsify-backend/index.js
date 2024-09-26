@@ -1,5 +1,6 @@
 const express = require("express");
-const cors = require("cors"); // If you're working with CORS issues
+const cors = require("cors");
+const path = require("path");
 const albums = require("./routes/albums");
 const albumSongs = require("./routes/albumSongs");
 const trendingArtists = require("./routes/trendingArtists");
