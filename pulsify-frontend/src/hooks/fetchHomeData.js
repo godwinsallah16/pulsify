@@ -12,7 +12,7 @@ const fetchHomeData = () => {
     const fetchArtists = async () => {
       try {
         const response = await axios.get(
-          `${hostUrl}/api/artists/trending-artists`
+          `${hostUrl}/api/artsits/trending-artists`
         );
         setArtists(response.data.global || []);
       } catch (error) {
