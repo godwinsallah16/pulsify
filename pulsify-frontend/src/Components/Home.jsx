@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
 import { FaPlayCircle } from 'react-icons/fa';
 import Card from "./Card"; // Adjust the import path as needed
 import { Link } from "react-router-dom";
-import axios from "axios"; // Axios for making API requests
 import fetchHomeData from "../hooks/fetchHomeData";
 
 
